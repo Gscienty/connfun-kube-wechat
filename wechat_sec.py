@@ -19,8 +19,9 @@ def nonce_generate():
 def sign(req_content):
     string_a = '&'.join([ key + '=' + str(req_content[key])
             for key in list(filter(lambda key:
-                req_content[key] is not None and req_content[key] != '',
+                req_content[key] is not None and req_content[key] != '' and key != 'sign',
                 req_content))])
 
     val = string_a + '&key=' + os.environ['SUB_KEY']
     return hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
+
