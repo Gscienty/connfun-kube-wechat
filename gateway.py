@@ -1,6 +1,5 @@
-import os
 from flask import Flask, request, abort
-from . import wechat_sec
+from . import wechat_sec, xml_util, http_util
 
 wechat_pay_gateway = Flask(__name__)
 
@@ -15,22 +14,16 @@ def unifiedOrder(trade_type, out_trade_no):
     if 'body' not in request.json or 'total_fee' not in request.json:
         abort(400)
 
-    req_content = {
-            'appid': os.environ['APP_ID'],
-            'mch_id': os.environ['MCH_ID'],
-            'sub_appid': os.environ['SUB_APPID'],
-            'sub_mch_id': os.environ['SUB_MCH_ID'],
-            'nonce_str': wechat_sec.nonce_generate(),
-            'body': request.json['body'],
-            'detail': request.json['detail'] if 'detail' in request.json else '',
-            'attach': request.json['attach'] if 'attach' in request.json else '',
-            'out_trade_no': out_trade_no,
-            'total_fee': request.json['total_fee'],
-            'spbill_create_ip': os.environ['SPBILL_CREATE_IP'],
-            'notify_url': os.environ['NOTIFY_URL'],
-            'trade_type': trade_type,
-            'receipt': request.json['receipt'] if 'receipt' in request.json else ''
-            }
+    req_content = wechat_sec.common_req_generate()
+    req_content['out_trade_no'] = out_trade_no
+    req_content['trade_type'] = trade_type
+    for key in request.json:
+        req_content[key] = request.json[key]
     req_content['sign'] = wechat_sec.sign(req_content)
 
-    return ''
+    res_content = http_util.normal_call(uri, req_content)
+    res_sign = wechat_sec.sign(res_content)
+    if res_sign != res_content['sign']:
+        return {}, 510
+
+    return req_content, 200

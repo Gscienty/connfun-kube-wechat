@@ -8,20 +8,33 @@ __alpha__ = [ 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd',
         'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M',
         '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' ]
 
-def nonce_generate():
+def __nonce_generate():
     rand = random.Random()
     ret = ''
     for i in range(32):
-        ret = __alpha__[rand.randint(0, len(__alpha__) - 1)]
+        ret += __alpha__[rand.randint(0, len(__alpha__) - 1)]
     return ret
 
+def common_req_generate():
+    return {
+            'appid': os.environ['APP_ID'],
+            'mch_id': os.environ['MCH_ID'],
+            'sub_appid': os.environ['SUB_APPID'],
+            'sub_mch_id': os.environ['SUB_MCH_ID'],
+            'nonce_str': __nonce_generate()
+            }
 
 def sign(req_content):
-    string_a = '&'.join([ key + '=' + str(req_content[key])
-            for key in list(filter(lambda key:
-                req_content[key] is not None and req_content[key] != '' and key != 'sign',
-                req_content))])
+    string_a_items = []
+    for key in sorted(req_content.keys()):
+        if key == 'sign':
+            continue
+        if req_content[key] is not None or req_content[key] != '':
+            continue
+        string_a_items.append(
+                '{key}={value}'.format(key=key, value=req_content[key]))
 
-    val = string_a + '&key=' + os.environ['SUB_KEY']
+    val = '&'.join(string_a_items) + '&key=' + os.environ['SUB_KEY']
+
     return hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
 
