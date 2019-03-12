@@ -15,15 +15,6 @@ def __nonce_generate():
         ret += __alpha__[rand.randint(0, len(__alpha__) - 1)]
     return ret
 
-def common_req_generate():
-    return {
-            'appid': os.environ['APP_ID'],
-            'mch_id': os.environ['MCH_ID'],
-            'sub_appid': os.environ['SUB_APPID'],
-            'sub_mch_id': os.environ['SUB_MCH_ID'],
-            'nonce_str': __nonce_generate()
-            }
-
 def sign(req_content):
     string_a_items = []
     for key in sorted(req_content.keys()):
@@ -33,8 +24,20 @@ def sign(req_content):
             continue
         string_a_items.append(
                 '{key}={value}'.format(key=key, value=req_content[key]))
-
     val = '&'.join(string_a_items) + '&key=' + os.environ['SUB_KEY']
-
     return hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
+
+def req_build(json_content):
+    req_content = {
+            'appid': os.environ['APP_ID'],
+            'mch_id': os.environ['MCH_ID'],
+            'sub_appid': os.environ['SUB_APPID'],
+            'sub_mch_id': os.environ['SUB_MCH_ID'],
+            'nonce_str': __nonce_generate()
+            }
+    for key in json_content:
+        req_content[key] = json_content[key]
+    req_content['sign'] = sign(req_content)
+
+    return req_content
 
