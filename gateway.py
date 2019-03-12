@@ -15,7 +15,7 @@ def __process(uri, sec=False):
         return {}, 510
     return req_content, 200
 
-def __check(required_fields):
+def __satisfy_fields(required_fields):
     if request.json is None:
         return False
     for field in required_fields:
@@ -23,12 +23,29 @@ def __check(required_fields):
             return False
     return True
 
-@wechat_pay_gateway.route('/unifiedorder', methods=[ 'POST' ])
-def unified_order():
+@wechat_pay_gateway.route('/<string:pay_type>/unifiedorder', methods=[ 'POST' ])
+def unified_order(pay_type):
+    if not __satisfy_fields({
+        'body', 'out_trade_no', 'total_fee',
+        'spbill_create_ip', 'notify_url', 'trade_type' }):
+        abort(400)
+    if pay_type == 'H5' and not __satisfy_fields({ 'scene_info' }):
+        abort(400)
     return __process('https://api.mch.weixin.qq.com/pay/unifiedorder')
+
+@wechat_pay_gateway.route('/micropay', methods=[ 'POST' ])
+def micro_pay():
+    if not __satisfy_fields({
+        'body', 'out_trade_no', 'total_fee',
+        'spbill_create_ip', 'auth_code' }):
+        abort(400)
+    return __process('https://api.mch.weixin.qq.com/pay/micropay')
 
 @wechat_pay_gateway.route('/orderquery', methods=[ 'POST' ])
 def order_query():
+    if not __satisfy_fields({ 'transaction_id' })
+    and not __satisfy_fields({ 'out_trade_no' }):
+        abort(400)
     retrun __process('https://api.mch.weixin.qq.com/pay/orderquery')
 
 @wechat_pay_gateway.route('/closeorder', methods=[ 'POST' ])
