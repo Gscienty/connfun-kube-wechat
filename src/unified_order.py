@@ -10,3 +10,8 @@ def jsapi_unified_order():
 def native_unified_order():
     return app.process('https://api.mch.weixin.qq.com/pay/unifiedorder')
 
+@app.app.route('/app/unified-order')
+@inspect.fields({ 'body', 'out_trade_no', 'total_fee', 'spbill_create_ip', 'notify_url', 'trade_type' })
+def app_unified_order():
+    return app.process('https://api.mch.weixin.qq.com/pay/unifiedorder')
+
