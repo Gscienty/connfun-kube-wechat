@@ -10,3 +10,8 @@ def micro_pay_reverse():
 def jsapi_pay_reverse():
     return app.process('https://api.mch.weixin.qq.com/secapi/refund', sec=True)
 
+@app.app.route('/native/refund')
+@inspect.fields({ [ 'transaction_id', 'out_trade_no' ], 'total_fee', 'refund_fee' })
+def native_pay_reverse():
+    return app.process('https://api.mch.weixin.qq.com/secapi/refund', sec=True)
+

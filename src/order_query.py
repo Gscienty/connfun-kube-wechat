@@ -10,3 +10,8 @@ def micro_pay_order_query():
 def jsapi_order_query():
     return app.process('https://api.mch.weixin.qq.com/pay/orderquery')
 
+@app.app.route('/native/order-query')
+@inspect.fields({[ 'transaction_id', 'out_trade_no' ]})
+def native_order_query():
+    return app.process('https://api.mch.weixin.qq.com/pay/orderquery')
+
