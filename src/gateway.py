@@ -1,5 +1,5 @@
 from flask import Flask, request, abort
-from . import wechat_sec, xml_util, http_util
+from . import wechat_sec, xml_util, http_util, fields_require
 
 wechat_pay_gateway = Flask(__name__)
 
@@ -15,32 +15,30 @@ def __process(uri, sec=False):
         return {}, 510
     return req_content, 200
 
-def __satisfy_fields(required_fields):
-    if request.json is None:
-        return False
-    for field in required_fields:
-        if field not in request.json:
-            return False
-    return True
 
-@wechat_pay_gateway.route('/<string:pay_type>/unifiedorder', methods=[ 'POST' ])
-def unified_order(pay_type):
-    if not __satisfy_fields({
-        'body', 'out_trade_no', 'total_fee',
-        'spbill_create_ip', 'notify_url', 'trade_type' }):
-        abort(400)
-    if pay_type == 'H5' and not __satisfy_fields({ 'scene_info' }):
-        abort(400)
+"""
+统一下单
+"""
+@wechat_pay_gateway.route('/unifiedorder', methods=[ 'POST' ])
+@fields_require.required({
+    'body', 'out_trade_no', 'total_fee', 'spbill_create_ip', 'notify_url', 'trade_type'
+})
+def unified_order():
     return __process('https://api.mch.weixin.qq.com/pay/unifiedorder')
 
+"""
+提交付费码支付
+"""
 @wechat_pay_gateway.route('/micropay', methods=[ 'POST' ])
+@fields_require.required({
+    'body', 'out_trade_no', 'total_fee', 'spbill_create_ip', 'auth_code'
+}):
 def micro_pay():
-    if not __satisfy_fields({
-        'body', 'out_trade_no', 'total_fee',
-        'spbill_create_ip', 'auth_code' }):
-        abort(400)
     return __process('https://api.mch.weixin.qq.com/pay/micropay')
 
+"""
+订单查询
+"""
 @wechat_pay_gateway.route('/orderquery', methods=[ 'POST' ])
 def order_query():
     if not __satisfy_fields({ 'transaction_id' })
@@ -60,3 +58,6 @@ def refund():
 def refund_query():
     retrun __process('https://api.mch.weixin.qq.com/pay/refundquery', sec=True)
 
+
+if __name__ == '__main__':
+    wechat_pay_gateway.run(host='0.0.0.0', port=5000)
