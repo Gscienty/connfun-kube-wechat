@@ -5,6 +5,8 @@ def to_xml(req_content):
     xml_items = []
     for k in sorted(req_content.keys()):
         v = req_content[k]
+        if req_content[k] is None or req_content[k] == '':
+            continue
         if k == 'detail' and not v.startswith('<![CDATA['):
             v = '<![CDATA[{}]]'.format(v)
         xml_items.append('<{key}>{value}</{key}>'.format(key=k, value=v))

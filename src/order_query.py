@@ -25,3 +25,7 @@ def app_order_query():
 def h5_order_query():
     return app.process('https://api.mch.weixin.qq.com/pay/orderquery')
 
+@app.app.route('/micro-app/order-query')
+@inspect.fields({[ 'transaction_id', 'out_trade_no' ]})
+def micro_app_order_query():
+    return app.process('https://api.mch.weixin.qq.com/pay/orderquery')

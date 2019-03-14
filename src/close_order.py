@@ -20,3 +20,8 @@ def app_close_order():
 def h5_close_order():
     return app.process('https://api.mch.weixin.qq.com/pay/closeorder')
 
+@app.app.route('/micro-app/close-order')
+@inspect.fields({ 'out_trade_no' })
+def micro_app_close_order():
+    return app.process('https://api.mch.weixin.qq.com/pay/closeorder')
+
