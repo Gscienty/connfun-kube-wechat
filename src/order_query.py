@@ -20,3 +20,8 @@ def native_order_query():
 def app_order_query():
     return app.process('https://api.mch.weixin.qq.com/pay/orderquery')
 
+@app.app.route('/h5/order-query')
+@inspect.fields({[ 'transaction_id', 'out_trade_no' ]})
+def h5_order_query():
+    return app.process('https://api.mch.weixin.qq.com/pay/orderquery')
+

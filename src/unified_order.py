@@ -15,3 +15,8 @@ def native_unified_order():
 def app_unified_order():
     return app.process('https://api.mch.weixin.qq.com/pay/unifiedorder')
 
+@app.app.route('/h5/unified-order')
+@inspect.fields({ 'body', 'out_trade_no', 'total_fee', 'spbill_create_ip', 'notify_url', 'trade_type', 'scene_info' })
+def h5_unified_order():
+    return app.process('https://api.mch.weixin.qq.com/pay/unifiedorder')
+

@@ -15,3 +15,8 @@ def native_close_order():
 def app_close_order():
     return app.process('https://api.mch.weixin.qq.com/pay/closeorder')
 
+@app.app.route('/h5/close-order')
+@inspect.fields({ 'out_trade_no' })
+def h5_close_order():
+    return app.process('https://api.mch.weixin.qq.com/pay/closeorder')
+
