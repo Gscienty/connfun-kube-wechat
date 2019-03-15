@@ -1,6 +1,7 @@
 import random
 import os
 import hashlib
+from flask import request
 
 __alpha__ = [ 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd',
         'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
@@ -24,20 +25,23 @@ def sign(req_content):
             continue
         string_a_items.append(
                 '{key}={value}'.format(key=key, value=req_content[key]))
-    val = '&'.join(string_a_items) + '&key=' + os.environ['SUB_KEY']
+    sub_key = request.headers.get('Sub-Key')
+    if sub_key is None:
+        sub_key = os.environ['SUB_KEY']
+    val = '&'.join(string_a_items) + '&key=' + sub_key
     return hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
 
 def req_build(json_content):
     req_content = {
             'appid': os.environ['APP_ID'],
             'mch_id': os.environ['MCH_ID'],
-            'sub_appid': os.environ['SUB_APPID'],
-            'sub_mch_id': os.environ['SUB_MCH_ID'],
+            'sub_appid': os.environ['SUB_APPID'] if 'Sub-Appid' not in request.headers else request.headers.get('Sub-Appid'),
+            'sub_mch_id': os.environ['SUB_MCH_ID'] if 'Sub-Mch-Id' not in request.headers else request.headers.get('Sub-Mch-Id'),
             'nonce_str': __nonce_generate()
             }
-    for key in json_content:
-        req_content[key] = json_content[key]
+    for pair in json_content.items():
+        if pair[1] is not None:
+            req_content[pair[0]] = pair[1]
     req_content['sign'] = sign(req_content)
-
     return req_content
 
