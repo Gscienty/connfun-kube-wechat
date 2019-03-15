@@ -1,4 +1,4 @@
-from . import xml_util
+import xml_util
 import requests
 import os
 
@@ -16,6 +16,9 @@ def normal_call(uri, content):
 
 def security_call(uri, content):
     global __headers
+
+    print(content)
+    exit()
     content = requests.post(uri,
             data=content,
             headers=__headers,

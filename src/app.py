@@ -1,5 +1,5 @@
 from flask import Flask, request, abort
-from . import wechat_sec, xml_util, http_util, fields_require
+import wechat_sec, http_util
 
 app = Flask(__name__)
 
