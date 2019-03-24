@@ -35,7 +35,7 @@ def req_build(json_content):
     req_content = {
             'appid': os.environ['APP_ID'],
             'mch_id': os.environ['MCH_ID'],
-            'sub_appid': os.environ['SUB_APPID'] if 'Sub-Appid' not in request.headers else request.headers.get('Sub-Appid'),
+            'sub_appid': os.environ['SUB_APP_ID'] if 'Sub-Appid' not in request.headers else request.headers.get('Sub-Appid'),
             'sub_mch_id': os.environ['SUB_MCH_ID'] if 'Sub-Mch-Id' not in request.headers else request.headers.get('Sub-Mch-Id'),
             'nonce_str': __nonce_generate()
             }

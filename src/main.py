@@ -3,13 +3,14 @@ import os
 import order_query
 
 def __log_env():
-    print('APP_ID: {}'.format(os.environ['APP_ID']))
-    print('MCH_ID: {}'.format(os.environ['MCH_ID']))
-    print('SUB_APPID: {}'.format(os.environ['SUB_APPID']))
-    print('SUB_MCH_ID: {}'.format(os.environ['SUB_MCH_ID']))
-    print('SUB_KEY: {}'.format(os.environ['SUB_KEY']))
-    print('API_CERT: {}'.format(os.environ['API_CERT']))
-    print('API_KEY: {}'.format(os.environ['API_KEY']))
+    print_lambda = lambda name: '{name}: {value}'.format(name=name, value=os.environ[name]) if name in os.environ else '{name}: undefined'.format(name=name)
+    print(print_lambda('APP_ID'))
+    print(print_lambda('MCH_ID'))
+    print(print_lambda('SUB_APP_ID'))
+    print(print_lambda('SUB_MCH_ID'))
+    print(print_lambda('SUB_KEY'))
+    print(print_lambda('API_CERT'))
+    print(print_lambda('API_KEY'))
 
 if __name__ == '__main__':
     __log_env()

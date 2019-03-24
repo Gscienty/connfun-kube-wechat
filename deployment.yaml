@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: connfun-wechat-pay-deploy
+    namespace: default
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: connfun-wechat-pay
+            release: dev
+    template:
+        metadata:
+            labels:
+                app: connfun-wechat-pay
+                release: dev
+        spec:
+            containers:
+            - name: connfun-wechat-pay-containers
+              image: connfun-wechat-pay:latest
+              ports:
+              - name: http
+                containerPort: 80
