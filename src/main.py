@@ -1,6 +1,15 @@
 from app import app
 import os
+import auth_code_to_openid
+import close_order
+import micro_pay
 import order_query
+import refund
+import refund_query
+import reverse
+import short_url
+import unified_order
+import xml_transfer
 
 def __log_env():
     print_lambda = lambda name: '{name}: {value}'.format(name=name, value=os.environ[name]) if name in os.environ else '{name}: undefined'.format(name=name)

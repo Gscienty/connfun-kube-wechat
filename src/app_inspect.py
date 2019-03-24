@@ -6,7 +6,6 @@ def fields(con_junction):
         @wraps(func)
         def __inner(*args, **kwargs):
             if request.json is None:
-                print("FUCK HERE")
                 return jsonify({ 'status': 'CHECK_FAILED', 'msg': 'request body empty' }), 400
             for con in con_junction:
                 if isinstance(con, str):
