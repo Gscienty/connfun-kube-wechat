@@ -4,7 +4,6 @@ metadata:
     name: connfun-wechat-pay-deploy
     namespace: default
 spec:
-    replicas: 1
     selector:
         matchLabels:
             app: connfun-wechat-pay
@@ -17,7 +16,32 @@ spec:
         spec:
             containers:
             - name: connfun-wechat-pay-containers
-              image: connfun-wechat-pay:latest
+              image: connfun.com/wechat-pay:latest
+              imagePullPolicy: Never
               ports:
               - name: http
-                containerPort: 80
+                containerPort: 5000
+              volumeMounts:
+              - mountPath: /mnt/pem
+                name: wechat-pem
+              env:
+              - name: APP_ID
+                value: "<appid>"
+              - name: MCH_ID
+                value: "<mchid>"
+              - name: SUB_APP_ID
+                value: "<sub_appid>"
+              - name: SUB_MCH_ID
+                value: "<sub_mchid>"
+              - name: SUB_KEY
+                value: "<subkey>"
+              - name: API_CERT
+                value: "/mnt/pem/apiclient_cert.pem"
+              - name: API_KEY
+                value: "/mnt/pem/apiclient_key.pem"
+            volumes:
+            - name: wechat-pem
+              hostPath:
+                  path: /
+
+
