@@ -26,7 +26,7 @@ spec:
                 name: wechat-pem
               env:
               - name: RUN_ENV
-                name: "mock"
+                value: "mock"
               - name: APP_ID
                 value: "<appid>"
               - name: MCH_ID
