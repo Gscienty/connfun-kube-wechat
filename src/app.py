@@ -15,5 +15,5 @@ def process(uri, sec=False):
         return jsonify(res_content), 400
     if wechat_sec.sign(res_content) != res_content['sign']:
         return {}, 510
-    return req_content, 200
+    return jsonify(res_content), 200
 
