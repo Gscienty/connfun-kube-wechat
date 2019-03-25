@@ -59,8 +59,8 @@ def mock_res_build():
             'sub_mch_id': get_sub_mch_id(),
             'nonce_str': nonce_generate()
             }
-    for mock_key in request.headers:
-        if mock_key.startswith('MOCK_'):
-            res_content[mock_key[5:]] = request.headers[mock_key]
+    for mock_header in request.headers:
+        if mock_header[0].startswith('MOCK_'):
+            res_content[mock_header[0][5:]] = mock_header[1]
     res_content['sign'] = sign(res_content)
     return res_content
