@@ -25,6 +25,8 @@ spec:
               - mountPath: /mnt/pem
                 name: wechat-pem
               env:
+              - name: RUN_ENV
+                name: "mock"
               - name: APP_ID
                 value: "<appid>"
               - name: MCH_ID
@@ -43,5 +45,18 @@ spec:
             - name: wechat-pem
               hostPath:
                   path: /
-
-
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: connfun-wechat-pay-service
+    labels:
+        name: connfun-wechat-pay-service
+spec:
+    selector:
+        app: connfun-wechat-pay
+    ports:
+    - port: 5000
+      protocol: TCP
+      nodePort: 30500
+    type: NodePort
