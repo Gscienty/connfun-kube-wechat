@@ -9,3 +9,7 @@
 * SUB_KEY 商户秘钥 (选填，可在 http request header 中添加 Sub-Key，该优先级高于环境变量)
 * API_CERT 证书
 * API_KEY 证书密钥
+* RUN_ENV 运行状态 分为三个: release/develop/mock
+
+## 适用环境
+本模块主要应用在Kubernetes微服务集群中。
