@@ -9,7 +9,7 @@ __alpha__ = [ 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd',
         'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M',
         '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' ]
 
-def __nonce_generate():
+def nonce_generate():
     rand = random.Random()
     ret = ''
     for i in range(32):
@@ -31,13 +31,19 @@ def sign(req_content):
     val = '&'.join(string_a_items) + '&key=' + sub_key
     return hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
 
+def get_sub_app_id():
+    return os.environ['SUB_APP_ID'] if 'Sub-Appid' not in request.headers else request.headers.get('Sub-Appid')
+
+def get_sub_mch_id():
+    return os.environ['SUB_MCH_ID'] if 'Sub-Mch-Id' not in request.headers else request.headers.get('Sub-Mch-Id')
+
 def req_build(json_content):
     req_content = {
             'appid': os.environ['APP_ID'],
             'mch_id': os.environ['MCH_ID'],
-            'sub_appid': os.environ['SUB_APP_ID'] if 'Sub-Appid' not in request.headers else request.headers.get('Sub-Appid'),
-            'sub_mch_id': os.environ['SUB_MCH_ID'] if 'Sub-Mch-Id' not in request.headers else request.headers.get('Sub-Mch-Id'),
-            'nonce_str': __nonce_generate()
+            'sub_appid': get_sub_app_id(),
+            'sub_mch_id': get_sub_mch_id(),
+            'nonce_str': nonce_generate()
             }
     for pair in json_content.items():
         if pair[1] is not None:
@@ -45,3 +51,16 @@ def req_build(json_content):
     req_content['sign'] = sign(req_content)
     return req_content
 
+def mock_res_build():
+    res_content = {
+            'appid': os.environ['APP_ID'],
+            'mch_id': os.environ['MCH_ID'],
+            'sub_appid': get_sub_app_id(),
+            'sub_mch_id': get_sub_mch_id(),
+            'nonce_str': nonce_generate()
+            }
+    for mock_key in request.headers:
+        if mock_key.startswith('MOCK_'):
+            res_content[mock_key[5:]] = request.headers[mock_key]
+    res_content['sign'] = sign(res_content)
+    return res_content
