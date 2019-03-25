@@ -20,6 +20,7 @@ def __log_env():
     print(print_lambda('SUB_KEY'))
     print(print_lambda('API_CERT'))
     print(print_lambda('API_KEY'))
+    print(print_lambda('RUN_ENV'))
 
 if __name__ == '__main__':
     __log_env()
