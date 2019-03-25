@@ -24,4 +24,4 @@ def __log_env():
 
 if __name__ == '__main__':
     __log_env()
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=5000, debug=os.environ['RUN_ENV'] in { 'develop', 'mock' })

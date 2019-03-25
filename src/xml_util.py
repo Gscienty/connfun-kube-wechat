@@ -13,8 +13,6 @@ def to_xml(req_content):
             v = '<![CDATA[{}]]'.format(v)
         xml_items.append('<{key}>{value}</{key}>'.format(key=k, value=v))
     res = '<xml>{}</xml>'.format(''.join(xml_items))
-    if os.environ['RUN_ENV'] in { 'mock', 'develop' }:
-        app.app.logger.debug(res)
     return res
 
 def parse_xml(xml_content):
@@ -23,6 +21,4 @@ def parse_xml(xml_content):
     if not xml:
         return {}
     res = dict([(item.name, item.text) for item in xml.find_all()])
-    if os.environ['RUN_ENV'] in { 'mock', 'develop' }:
-        app.app.logger.debug(res)
     return res

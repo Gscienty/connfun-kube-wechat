@@ -14,6 +14,7 @@ def normal_call(uri, content):
                 headers=__headers)
         return xml_util.parse_xml(res.text)
     elif run_env in { 'mock' }:
+        print(xml_util.to_xml(content))
         return wechat_sec.mock_res_build()
 
 def security_call(uri, content):
@@ -26,4 +27,5 @@ def security_call(uri, content):
                 cert=(os.environ['API_CERT'], os.environ['API_KEY']))
         return xml_util.parse_xml(res.text)
     elif run_env in { 'mock' }:
+        print(xml_util.to_xml(content))
         return wechat_sec.mock_res_build()
