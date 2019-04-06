@@ -10,7 +10,7 @@
 * API_CERT 证书
 * API_KEY 证书密钥
 * RUN_ENV 运行状态 分为三个: release/develop/mock
-* OAUTH_REDIRECT_URI OAUTH的调用地址
+* OAUTH_REDIRECT_URI oauth的调用地址
 
 ## 适用环境
 本模块主要应用在Kubernetes微服务集群中。
