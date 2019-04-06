@@ -21,6 +21,7 @@ def __log_env():
     print(print_lambda('API_CERT'))
     print(print_lambda('API_KEY'))
     print(print_lambda('RUN_ENV'))
+    print(print_lambda('OAUTH_REDIRECT_URI'))
 
 if __name__ == '__main__':
     __log_env()

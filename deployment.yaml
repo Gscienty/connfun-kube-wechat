@@ -41,6 +41,8 @@ spec:
                 value: "/mnt/pem/apiclient_cert.pem"
               - name: API_KEY
                 value: "/mnt/pem/apiclient_key.pem"
+              - name: OAUTH_REDIRECT_URI
+                value: '<oauth_redirect_uri>'
             volumes:
             - name: wechat-pem
               hostPath:
