@@ -27,20 +27,23 @@ def sign(req_content):
                 '{key}={value}'.format(key=key, value=req_content[key]))
     sub_key = request.headers.get('Sub-Key')
     if sub_key is None:
-        sub_key = os.environ['SUB_KEY']
+        sub_key = os.getenv('SUB_KEY')
     val = '&'.join(string_a_items) + '&key=' + sub_key
     return hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
 
 def get_sub_app_id():
-    return os.environ['SUB_APP_ID'] if 'Sub-Appid' not in request.headers else request.headers.get('Sub-Appid')
+    return os.getenv('SUB_APP_ID') if 'Sub-Appid' not in request.headers else request.headers.get('Sub-Appid')
 
 def get_sub_mch_id():
-    return os.environ['SUB_MCH_ID'] if 'Sub-Mch-Id' not in request.headers else request.headers.get('Sub-Mch-Id')
+    return os.getenv('SUB_MCH_ID') if 'Sub-Mch-Id' not in request.headers else request.headers.get('Sub-Mch-Id')
+
+def get_oauth_redirect_uri():
+    return os.getenv('OAUTH_REDIRECT_URI') if 'OAuth-Redirect-URI' not in request.headers else request.headers.get('OAuth-Redirect-URI')
 
 def req_build(json_content):
     req_content = {
-            'appid': os.environ['APP_ID'],
-            'mch_id': os.environ['MCH_ID'],
+            'appid': os.getenv('APP_ID'),
+            'mch_id': os.getenv('MCH_ID'),
             'sub_appid': get_sub_app_id(),
             'sub_mch_id': get_sub_mch_id(),
             'nonce_str': nonce_generate()
@@ -53,8 +56,8 @@ def req_build(json_content):
 
 def mock_res_build():
     res_content = {
-            'appid': os.environ['APP_ID'],
-            'mch_id': os.environ['MCH_ID'],
+            'appid': os.getenv('APP_ID'),
+            'mch_id': os.getenv('MCH_ID'),
             'sub_appid': get_sub_app_id(),
             'sub_mch_id': get_sub_mch_id(),
             'nonce_str': nonce_generate()

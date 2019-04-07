@@ -9,7 +9,7 @@ def wechat_oauth2_uri():
     auth_params = request.json
     req_uri = 'https://open.weixin.qq.com/connect/oauth2/authorize'
     req_uri += '?appid={}'.format(wechat_sec.get_sub_app_id())
-    req_uri += '&redirect_uri={}'.format(os.getenv('OAUTH_REDIRECT_URI'))
+    req_uri += '&redirect_uri={}'.format(wechat_sec.get_oauth_redirect_uri())
     req_uri += '&response_type=code'
     req_uri += '&scope={}'.format(auth_params['scope'])
     req_uri += '&state={}'.format(auth_params['state'] if 'state' in auth_params else '')
@@ -40,7 +40,7 @@ def wechat_oauth2_fresh():
 
 @app.app.route('/oauth2/userinfo', methods=[ 'POST' ])
 @app_inspect.fields({ 'token' , 'openid' })
-defe wechat_oauth2_userinfo():
+def wechat_oauth2_userinfo():
     req_uri = 'https://api.weixin.qq.com/sns/userinfo'
     req_uri = '&access_token={}'.format(request.json['token'])
     req_uri = '&openid={}'.format(requests.json['openid'])
@@ -49,3 +49,12 @@ defe wechat_oauth2_userinfo():
             headers={ 'Content-Type': 'application/json' })
     return jsonify(res.json), 200
 
+@app.app.route('/oauth2/verify', methods=[ 'POST' ])
+@app_inspect.fields({ 'token', 'openid' })
+def wechat_oauth2_verify():
+    req_uri = 'https://api.weixin.qq.com/sns/auth'
+    req_uri = '?access_token={}'.format(request.json['token'])
+    req_uri = '&openid={}'.format(request.json['openid'])
+    res = requests.get(uri,
+            headers={ 'Content-Type': 'application/json' })
+    return jsonify(res.json), 200

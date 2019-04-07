@@ -10,9 +10,10 @@ import reverse
 import short_url
 import unified_order
 import xml_transfer
+import open_id
 
 def __log_env():
-    print_lambda = lambda name: '{name}: {value}'.format(name=name, value=os.environ[name]) if name in os.environ else '{name}: undefined'.format(name=name)
+    print_lambda = lambda name: '{name}: {value}'.format(name=name, value=os.getenv(name)) if name in os.environ else '{name}: undefined'.format(name=name)
     print(print_lambda('APP_ID'))
     print(print_lambda('MCH_ID'))
     print(print_lambda('SUB_APP_ID'))
@@ -25,4 +26,4 @@ def __log_env():
 
 if __name__ == '__main__':
     __log_env()
-    app.run(host='0.0.0.0', port=5000, debug=os.environ['RUN_ENV'] in { 'develop', 'mock' })
+    app.run(host='0.0.0.0', port=5000, debug=os.getenv('RUN_ENV') in { 'develop', 'mock' })

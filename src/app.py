@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.logger.setLevel(logging.NOTSET)
 
 def process(uri, sec=False):
-    run_env = os.environ['RUN_ENV']
+    run_env = os.getenv('RUN_ENV')
     req = wechat_sec.req_build(request.json)
     if run_env in { 'develop', 'mock' }:
         print('client request: uri: {uri};sec:{sec}; req body: {req}'.format(uri=uri, sec=sec, req=str(req)))
