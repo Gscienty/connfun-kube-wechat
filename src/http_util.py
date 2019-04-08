@@ -24,7 +24,7 @@ def security_call(uri, content):
         res = requests.post(uri,
                 data=xml_util.to_xml(content),
                 headers=__headers,
-                cert=(os.getenv('API_CERT'), os.getenv('API_KEY'))
+                cert=(os.getenv('API_CERT'), os.getenv('API_KEY')))
         return xml_util.parse_xml(res.text)
     elif run_env in { 'mock' }:
         print(xml_util.to_xml(content))
