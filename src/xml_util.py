@@ -1,4 +1,5 @@
 import xml
+import sys
 from bs4 import BeautifulSoup
 
 def to_xml(req_content):
@@ -10,7 +11,9 @@ def to_xml(req_content):
         if k == 'detail' and not v.startswith('<![CDATA['):
             v = '<![CDATA[{}]]'.format(v)
         xml_items.append('<{key}>{value}</{key}>'.format(key=k, value=v))
-    return '<xml>{}</xml>'.format(''.join(xml_items))
+    ret = '<xml>{}</xml>'.format(''.join(xml_items))
+    print(ret, file=sys.stderr)
+    return ret
 
 def parse_xml(xml_content):
     soup = BeautifulSoup(xml_content, features='xml')

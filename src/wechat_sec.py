@@ -1,7 +1,9 @@
 import random
 import os
+import sys
 import hashlib
 from flask import request
+import app
 
 __alpha__ = [ 'q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', 'a', 's', 'd',
         'f', 'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm',
@@ -21,7 +23,7 @@ def sign(req_content):
     for key in sorted(req_content.keys()):
         if key == 'sign':
             continue
-        if req_content[key] is not None or req_content[key] != '':
+        if req_content[key] is None or req_content[key] == '':
             continue
         string_a_items.append(
                 '{key}={value}'.format(key=key, value=req_content[key]))

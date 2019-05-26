@@ -6,12 +6,10 @@ def fields(con_junction):
         @wraps(func)
         def __inner(*args, **kwargs):
             if request.json is None:
-                print("FUCK HERE")
                 return jsonify({ 'status': 'CHECK_FAILED', 'msg': 'request body empty' }), 400
             for con in con_junction:
                 if isinstance(con, str):
                     if con not in request.json:
-                        print("FUCK HERE")
                         return jsonify({ 'status': 'CHECK_FAILED', 'msg': 'lack required field' }), 400
                 elif isinstance(con, tuple):
                     satisfy = False
@@ -19,7 +17,6 @@ def fields(con_junction):
                         if sub_con in request.json:
                             satisfy = True
                     if satisfy == False:
-                        print("FUCK HERE")
                         return jsonify({ 'status': 'CHECK_FAILED', 'msg': 'lack required field' }), 400
                 else:
                     return jsonify({ 'status': 'SERVER_FAILED', 'msg': 'inner error' }), 500
