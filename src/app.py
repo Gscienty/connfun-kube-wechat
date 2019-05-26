@@ -1,5 +1,6 @@
 from flask import Flask, request, abort, jsonify
 import wechat_sec, http_util
+import sys
 import os
 import logging
 
@@ -19,7 +20,7 @@ def process(uri, sec=False):
 
     if 'sign' not in res_content:
         return jsonify(res_content), 400
-    if wechat_sec.sign(res_content) != res_content['sign']:
+    if wechat_sec.response_sign_check(res_content) == False:
         return {}, 510
     return jsonify(res_content), 200
 

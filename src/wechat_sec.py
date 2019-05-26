@@ -18,6 +18,20 @@ def nonce_generate():
         ret += __alpha__[rand.randint(0, len(__alpha__) - 1)]
     return ret
 
+def response_sign_check(content):
+    string_a_items = []
+    for key in sorted(content.keys()):
+        if key == 'sign':
+            continue
+        string_a_items.append('{key}={value}'.format(key=key, value=content[key]))
+    sub_key = request.headers.get('Sub-Key')
+    if sub_key is None:
+        sub_key = os.getenv('SUB_KEY')
+    val = '&'.join(string_a_items) + '&key=' + sub_key
+    res_sign = content['sign']
+    local_sign = hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
+    return True
+
 def sign(req_content):
     string_a_items = []
     for key in sorted(req_content.keys()):

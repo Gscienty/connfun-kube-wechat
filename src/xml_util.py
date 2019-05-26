@@ -14,7 +14,6 @@ def to_xml(req_content):
             v = '<![CDATA[{}]]'.format(v)
         xml_items.append('<{key}>{value}</{key}>'.format(key=k, value=v))
     ret = '<xml>{}</xml>'.format(''.join(xml_items))
-    print(ret, file=sys.stderr)
     return ret
 
 def parse_xml(xml_content):
