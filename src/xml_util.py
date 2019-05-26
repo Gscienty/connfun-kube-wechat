@@ -1,6 +1,8 @@
 import xml
 import sys
 from bs4 import BeautifulSoup
+import os
+import app
 
 def to_xml(req_content):
     xml_items = []
@@ -20,4 +22,5 @@ def parse_xml(xml_content):
     xml = soup.find('xml')
     if not xml:
         return {}
-    return dict([(item.name, item.text) for item in xml.find_all()])
+    res = dict([(item.name, item.text) for item in xml.find_all()])
+    return res
