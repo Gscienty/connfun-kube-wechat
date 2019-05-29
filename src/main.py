@@ -11,6 +11,7 @@ import short_url
 import unified_order
 import xml_transfer
 import open_id
+import export_sign
 
 def __log_env():
     print_lambda = lambda name: '{name}: {value}'.format(name=name, value=os.getenv(name)) if name in os.environ else '{name}: undefined'.format(name=name)
