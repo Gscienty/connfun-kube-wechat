@@ -24,9 +24,9 @@ def response_sign_check(content):
         if key == 'sign':
             continue
         string_a_items.append('{key}={value}'.format(key=key, value=content[key]))
-    sub_key = request.headers.get('Sub-Key')
+    sub_key = request.headers.get('Wx-Mch-Key')
     if sub_key is None:
-        sub_key = os.getenv('SUB_KEY')
+        sub_key = os.getenv('WX_MCH_KEY')
     val = '&'.join(string_a_items) + '&key=' + sub_key
     res_sign = content['sign']
     local_sign = hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
@@ -41,9 +41,9 @@ def sign(req_content):
             continue
         string_a_items.append(
                 '{key}={value}'.format(key=key, value=req_content[key]))
-    sub_key = request.headers.get('Sub-Key')
+    sub_key = request.headers.get('Wx-Mch-Key')
     if sub_key is None:
-        sub_key = os.getenv('SUB_KEY')
+        sub_key = os.getenv('WX_MCH_KEY')
     val = '&'.join(string_a_items) + '&key=' + sub_key
     return hashlib.md5(val.encode(encoding='UTF-8')).hexdigest().upper()
 
