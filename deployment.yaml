@@ -35,8 +35,12 @@ spec:
                 value: "<sub_appid>"
               - name: SUB_MCH_ID
                 value: "<sub_mchid>"
-              - name: SUB_KEY
+              - name: WX_MCH_KEY
                 value: "<subkey>"
+              - name: APP_SECRET
+                value: "<app_secret>"
+              - name: SUB_APP_SECRET
+                value: "<sub_app_secret>"
               - name: API_CERT
                 value: "/mnt/pem/apiclient_cert.pem"
               - name: API_KEY
