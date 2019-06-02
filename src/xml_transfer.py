@@ -1,5 +1,5 @@
 import app
-from flask import request
+from flask import request, jsonify
 import xml_util
 
 @app.app.route('/xml_transfer', methods=[ 'POST' ])
